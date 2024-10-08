@@ -1,4 +1,4 @@
-**Overview **
+**Overview :**
 This project demonstrates the usage of the QOI (Quite OK Image) format for image encoding/decoding, along with running OpenCV face detection on a QOI image. It allows the following:
 
 Load a JPEG/PNG image. 
