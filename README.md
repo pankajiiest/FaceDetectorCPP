@@ -24,6 +24,9 @@ GitHub repo: QOI - https://github.com/phoboslab/qoi?tab=readme-ov-file
 **Setup and Compilation for Xcode**
 
 Clone the Repository : git clone https://github.com/your-username/qoi-face-detection.git
+
 open MyFaceDetectorCPP.xcodeproj
-Install OpenCV (via Homebrew)
+
+Install OpenCV (via brew)
+
 Build and Run the Project using Cmd + R . Xcode will compile the code and run the face detection program. You should see the output window showing the loaded image with bounding boxes around detected faces.
