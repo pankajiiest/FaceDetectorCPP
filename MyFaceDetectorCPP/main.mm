@@ -144,25 +144,23 @@ int main(int argc, const char* argv[]) {
 	const int width = 640;
 	const int height = 320;
 	const std::string windowName = "My Window";
+	
+	NSBundle* bundle = [NSBundle mainBundle];
+	NSString* resourcePath = [bundle resourcePath];
+	NSString* imagePath = [resourcePath stringByAppendingPathComponent:@"Resources/SampleImage3.jpeg"];
+	std::string imagePathC = [imagePath UTF8String];
 
-	@autoreleasepool {
-		NSBundle* bundle = [NSBundle mainBundle];
-		NSString* resourcePath = [bundle resourcePath];
-		NSString* imagePath = [resourcePath stringByAppendingPathComponent:@"Resources/SampleImage3.jpeg"];
-		std::string imagePathC = [imagePath UTF8String];
-
-		try {
-			ImageQOIProcessor processor(windowName, width, height);
-			cv::Mat image = processor.loadImage(imagePathC);
-			if (processor.saveQOI(image, "output.qoi")) {
-				
-				cv::Mat qoiImage = processor.loadQOI("output.qoi");
-				processor.detectAndDisplayFaces(qoiImage);
-			}
-		} catch (const std::runtime_error& e) {
-			std::cerr << e.what() << std::endl;
-			return -1;
+	try {
+		ImageQOIProcessor processor(windowName, width, height);
+		cv::Mat image = processor.loadImage(imagePathC);
+		if (processor.saveQOI(image, "output.qoi")) {
+			
+			cv::Mat qoiImage = processor.loadQOI("output.qoi");
+			processor.detectAndDisplayFaces(qoiImage);
 		}
+	} catch (const std::runtime_error& e) {
+		std::cerr << e.what() << std::endl;
+		return -1;
 	}
 	
 	std::filesystem::path currentPath = std::filesystem::current_path();
