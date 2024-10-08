@@ -36,7 +36,6 @@ cv::Mat ImageQOIProcessor::loadImage(const std::string& imagePath) {
 	cv::Mat image = cv::imread(imagePath);
 	if (image.empty()) {
 		std::cerr << "Error: Could not load image from " << imagePath << std::endl;
-		throw std::runtime_error("Image loading failed");
 	}
 	return image;
 }
@@ -81,10 +80,9 @@ cv::Mat ImageQOIProcessor::loadQOI(const std::string& inputPath) {
 	std::ifstream inputFile(inputPath, std::ios::binary);
 	if (!inputFile.is_open()) {
 		std::cerr << "Error: Could not open QOI file." << std::endl;
-		throw std::runtime_error("QOI loading failed");
 	}
 
-	// Read QOI file into a vector
+	// Reading QOI file into a vector
 	inputFile.seekg(0, std::ios::end);
 	size_t fileSize = inputFile.tellg();
 	inputFile.seekg(0, std::ios::beg);
@@ -93,24 +91,22 @@ cv::Mat ImageQOIProcessor::loadQOI(const std::string& inputPath) {
 	inputFile.read(reinterpret_cast<char*>(qoiData.data()), fileSize);
 	inputFile.close();
 
-	// Decode QOI data
+	// Decoding QOI data
 	qoi_desc desc;
-	void* pixels = qoi_decode(qoiData.data(), fileSize, &desc, 4); // RGBA
+	void* pixels = qoi_decode(qoiData.data(), fileSize, &desc, 4);
 
 	if (!pixels) {
 		std::cerr << "Error: Decoding QOI failed!" << std::endl;
-		throw std::runtime_error("QOI decoding failed");
 	}
 	
-	// Create an OpenCV Mat object from the decoded data
-		cv::Mat img(desc.height, desc.width, CV_8UC4, pixels);  // 4 channels (RGBA)
-		cv::Mat imgBGR;
-		cv::cvtColor(img, imgBGR, cv::COLOR_RGBA2BGR);  // Convert RGBA to BGR for OpenCV
+	// Creating an OpenCV Mat object from the decoded data
+	cv::Mat img(desc.height, desc.width, CV_8UC4, pixels);
+	cv::Mat imgBGR;
+	cv::cvtColor(img, imgBGR, cv::COLOR_RGBA2BGR);
 
-		// Free the decoded QOI data
-		free(pixels);
-		return imgBGR;
-	}
+	free(pixels);
+	return imgBGR;
+}
 
 
 void ImageQOIProcessor::displayImage(const cv::Mat& img) {
@@ -128,7 +124,6 @@ void ImageQOIProcessor::detectAndDisplayFaces(cv::Mat& img) {
 	cv::CascadeClassifier faceCascade;
 	if (!faceCascade.load("Resources/haarcascade_frontalface_default.xml")) {
 		std::cerr << "Error: Could not load Haar cascade!" << std::endl;
-		throw std::runtime_error("Face cascade loading failed");
 	}
 	
 	std::vector<cv::Rect> faces;
